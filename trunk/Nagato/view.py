@@ -1,4 +1,13 @@
 from django.http import HttpResponse
+from ZODB import FileStorage, DB 
+import transaction
+from persistent import Persistent
+
+
+
+class User(Persistent):
+    pass
+
 
 
 def carnet(request):
@@ -19,7 +28,7 @@ def rajouter(request):
         html = """<html><body>
         <a href="../">Retour</A><br>
         rajouter un contact
-                <form action="rajoutercontact" method="post"> 
+                <form action="rajoutercontact/" method="post"> 
         <table><tr><td>
         <p>Societe</p> 
               <input type="text" name="societe"    size="35" maxlength="40"/></td> <td>
@@ -112,7 +121,13 @@ def rajouter(request):
 Importer un fichier csv.
         </body></html>"""
         return HttpResponse(html)
-
+    
+def rajoutercontact(request):
+    html = "<html><body>%s</body></html>" % request.POST['societe']
+    return HttpResponse(html)
+    
+    
+    
 def chercher(request):
         html = """
         <a href="../">Retour</A><br>
