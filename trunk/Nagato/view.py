@@ -121,11 +121,30 @@ Importer un fichier csv.
         return HttpResponse(html)
     
 def rajoutercontact(request):
-    html = "<html><body>%s</body></html>" % request.POST['societe']
+    societe = request.POST['societe']
+    fonction = request.POST['fonction']
+    nom = request.POST['nom']
+    prenom = request.POST['prenom']
+    ad1 = request.POST['ad1']
+    ad1 = request.POST['ad2']
+    ad1 = request.POST['ad3']
+    ad1 = request.POST['ad4']
+    cp = request.POST['cp']
+    ville = request.POST['ville']
+    mail1 = request.POST['mail1']
+    mail2 = request.POST['mail2']
+    tel1 = request.POST['tel1']
+    tel2 = request.POST['tel2']
+    portable1 = request.POST['portable1']
+    portable2 = request.POST['portable2']
+    annijour = request.POST['annijour']
+    annimois = request.POST['annimois']
+    anniannee = request.POST['anniannee']
+    html = "<html><body>%s</body></html>" % societe
     return HttpResponse(html)
     
 def rechercher(request):
-    html = "<html><body>%s</body></html>" % request.POST['recherche']
+    html = "<html><body>%s %s</body></html>" % (request.POST['recherche'],request.POST['rechercheb'])
     return HttpResponse(html)
 
 def chercher(request):
