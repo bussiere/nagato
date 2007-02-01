@@ -8,8 +8,6 @@ from persistent import Persistent
 class User(Persistent):
     pass
 
-
-
 def carnet(request):
     
     html = """<html><body><table width=100% height=100% align="center" valign="top">
