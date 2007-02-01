@@ -126,13 +126,15 @@ def rajoutercontact(request):
     html = "<html><body>%s</body></html>" % request.POST['societe']
     return HttpResponse(html)
     
-    
-    
+def rechercher(request):
+    html = "<html><body>%s</body></html>" % request.POST['recherche']
+    return HttpResponse(html)
+
 def chercher(request):
         html = """
         <a href="../">Retour</A><br>
        Chercher
-        <form action="rechercher" method="post">
+        <form action="rechercher/" method="post">
         <table><tr><td>
 <INPUT TYPE=radio NAME=rechercheb VALUE=9>Societe<br>
 <INPUT TYPE=radio NAME=rechercheb VALUE=8>fonction<br>
