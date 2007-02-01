@@ -140,7 +140,7 @@ def rajoutercontact(request):
     annijour = request.POST['annijour']
     annimois = request.POST['annimois']
     anniannee = request.POST['anniannee']
-    html = "<html><body>%s</body></html>" % societe
+    html = "<html><body>%s %s</body></html>" % (societe,anniannee)
     return HttpResponse(html)
     
 def rechercher(request):
