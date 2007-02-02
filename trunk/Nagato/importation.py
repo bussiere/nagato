@@ -1,14 +1,20 @@
 import csv,fileinput,glob,string,os,unicodedata,sys
+from ZODB import FileStorage, DB 
+import transaction,re
+from persistent import Persistent
+
+
+
 fichA= "clients.csv"
 cr1 = csv.reader(open(fichA),delimiter=";")
 class User(Persistent):
     pass
 
-newuser = User() 
+ 
 storage2 = FileStorage.FileStorage('bd/id.fs')
-db2 = DB(storage)
+db2 = DB(storage2)
 connection2 = db2.open()
-root2 = connection.root()
+root2 = connection2.root()
 
 
 storage = FileStorage.FileStorage('bd/contact.fs')
@@ -23,38 +29,46 @@ ligne = ""
 for row in  cr1:
         compteur = 0
         for case in row :
+            newuser = User() 
+            newuser.notes = ""
             if compteur == 0 :
                 newuser.notes += " %s " % case
             if compteur == 1 :
                 newuser.societe = "%s" % case
+                print newuser.societe
             if compteur == 2 :
                 newuser.fonction = "%s" % case
             if compteur == 3 :
                 newuser.civ = "%s" % case
             if compteur == 4 :
                 newuser.prenom = "%s" % case
-                newuser.nom = request.POST['nom']
-                newuser.ad1 = request.POST['ad1']
-                newuser.ad2 = request.POST['ad2']
-                newuser.ad3 = request.POST['ad3']
-                newuser.ad4 = request.POST['ad4']
-                newuser.cp = request.POST['cp']
-                newuser.ville = request.POST['ville']
-                newuser.mail1 = request.POST['mail1']
-                newuser.mail2 = request.POST['mail2']
-                newuser.tel1 = request.POST['tel1']
-                newuser.tel2 = request.POST['tel2']
-                newuser.portable1 = request.POST['portable1']
-                newuser.portable2 = request.POST['portable2']
-                newuser.annijour = request.POST['annijour']
-                newuser.annimois = request.POST['annimois']
-                newuser.anniannee = request.POST['anniannee']
+            if compteur == 5 :
+                newuser.nom = "%s" % case
+            if compteur == 6 :
+                newuser.ad1 = "%s" % case
+            if compteur == 7 :
+                newuser.ad2 = "%s" % case
+            if compteur == 8 :
+                newuser.cp = "%s" % case
+            if compteur == 9 :
+                newuser.ville = "%s" % case
+            if compteur == 10 :
+                newuser.tel1 = "%s" % case
+            if compteur == 11 :
+                newuser.mail1 = "%s" % case
+            if compteur == 12 :
+                newuser.tel2 = "%s" % case
+            if compteur == 13 :
+                newuser.notes += " %s " % case
+            if compteur == 14 :
+                newuser.notes += " %s " % case
             compteur += 1
         k = root2.items()
         newuser.id = len(k)
         root2[newuser.id] = newuser.id
         transaction.commit()
         root[newuser.id] = newuser
+        
         transaction.commit()
 connection.close()
 connection2.close()
