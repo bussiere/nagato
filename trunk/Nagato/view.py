@@ -34,7 +34,10 @@ def rajouter(request):
               <input type="text" name="societe"    size="35" maxlength="40"/></td> <td>
         <p>Fonction</p> 
               <input type="text" name="fonction"    size="35" maxlength="40"/></td></tr>
-        <tr><td><p>Nom</p> 
+        <tr>
+         <td><p>Civ</p> 
+         <input type="text" name="civ"    size="35" maxlength="40"/> </td>
+        <td><p>Nom</p> 
               <input type="text" name="nom"    size="35" maxlength="40"/> </td> 
         <td><p>Prenom</p> 
          <input type="text" name="prenom"    size="35" maxlength="40"/> </td> </tr>
@@ -140,6 +143,7 @@ def rajoutercontact(request):
     newuser = User() 
     newuser.societe = request.POST['societe']
     newuser.fonction = request.POST['fonction']
+    newuser.civ = request.POST['civ']
     newuser.nom = request.POST['nom']
     newuser.prenom = request.POST['prenom']
     newuser.ad1 = request.POST['ad1']
@@ -237,7 +241,7 @@ def rechercher(request):
                 listec.append(l[1])
                 
     for contact in listec :
-        html = html + "%s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s <br>" %(contact.societe,contact.fonction,contact.nom,contact.prenom,contact.ad1,contact.ad2,contact.ad3,contact.ad4,contact.cp,contact.ville,contact.mail1,contact.mail2,contact.tel1,contact.tel2,contact.portable1,contact.portable2,contact.annijour,contact.annimois,contact.anniannee)
+        html = html + "%s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s <br>" %(contact.societe,contact.fonction,contact.civ,contact.nom,contact.prenom,contact.ad1,contact.ad2,contact.ad3,contact.ad4,contact.cp,contact.ville,contact.mail1,contact.mail2,contact.tel1,contact.tel2,contact.portable1,contact.portable2,contact.annijour,contact.annimois,contact.anniannee)
     return HttpResponse(html)
 
 def chercher(request):
