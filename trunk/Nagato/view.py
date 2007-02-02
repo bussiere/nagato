@@ -126,7 +126,7 @@ Importer un fichier csv.
         return HttpResponse(html)
     
 def rajoutercontact(request):
-    
+    newuser = User() 
     storage = FileStorage.FileStorage('bd/id.fs')
     db = DB(storage)
     connection = db.open()
@@ -140,7 +140,7 @@ def rajoutercontact(request):
     db = DB(storage)
     connection = db.open()
     root = connection.root()
-    newuser = User() 
+
     newuser.societe = request.POST['societe']
     newuser.fonction = request.POST['fonction']
     newuser.civ = request.POST['civ']
