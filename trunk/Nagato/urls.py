@@ -10,6 +10,7 @@ urlpatterns = patterns('',
  (r'^carnet/rajouter/$', rajouter),
  (r'^carnet/chercher/$', chercher),
  (r'^carnet/mas/$', mas),
+ (r'^carnet/mas/chermaj/$', chermaj),
  (r'^carnet/rajouter/rajoutercontact/$', rajoutercontact),
  (r'^carnet/chercher/rechercher/$', rechercher),
 )
