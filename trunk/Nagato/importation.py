@@ -22,14 +22,14 @@ db = DB(storage)
 connection = db.open()
 root = connection.root()
 
-
+newuser = User() 
 
 
 ligne = ""
 for row in  cr1:
         compteur = 0
         for case in row :
-            newuser = User() 
+            
             newuser.notes = ""
             if compteur == 0 :
                 newuser.notes += " %s " % case

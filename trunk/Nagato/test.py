@@ -8,5 +8,5 @@ root = connection.root()
 k =  root.items()
 for l in k :
     newuser = l[1]
-    print newuser.notes
+    print newuser.id
 connection.close()
