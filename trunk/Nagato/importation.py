@@ -8,14 +8,9 @@ from persistent import Persistent
 fichA= "clients.csv"
 cr1 = csv.reader(open(fichA),delimiter=";")
 class User(Persistent):
-    def __init__(self):
-        self.id = ""
+    pass
 
  
-storage2 = FileStorage.FileStorage('bd/id.fs')
-db2 = DB(storage2)
-connection2 = db2.open()
-root2 = connection2.root()
 
 
 storage = FileStorage.FileStorage('bd/contact.fs')
@@ -24,11 +19,12 @@ connection = db.open()
 root = connection.root()
 
 
-newuser = User() 
+
 
 
 ligne = ""
 for row in  cr1:
+        newuser = User() 
         compteur = 0
         for case in row :
             transaction.commit()
@@ -65,18 +61,18 @@ for row in  cr1:
             if compteur == 14 :
                 newuser.notes += " %s " % case
             compteur += 1
-        k = root2.items()
+        k = root.items()
         transaction.commit()
         newuser.id = len(k)
-        print len(k)
-        root2[newuser.id] = newuser.id
         transaction.commit()
+        newuser._p_changed
         root[newuser.id] = newuser
         transaction.commit()
-        print root2[newuser.id]
-        transaction.commit()
+        del newuser
+        
+
 connection.close()
-connection2.close()
+
 print 'FINIT'
 choix = raw_input("FINIT")
 

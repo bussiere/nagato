@@ -1,6 +1,12 @@
 from ZODB import FileStorage, DB 
 import transaction
 from persistent import Persistent
+import logging
+logging.getLogger("ZODB.FileStorage").setLevel(10000000)
+logging.getLogger("ZODB.lock_file").setLevel(10000000)
+logging.getLogger("ZODB.Connection").setLevel(10000000) 
+
+
 class User(Persistent):
     pass
               
@@ -10,8 +16,7 @@ connection = db.open()
 root = connection.root()
 
 k =  root.items()
-print k
 for l in k :
-    print root[l[0]].societe
+   print l[1].societe
 
 connection.close()
