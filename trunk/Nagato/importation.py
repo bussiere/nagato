@@ -8,19 +8,30 @@ from persistent import Persistent
 fichA= "clients.csv"
 cr1 = csv.reader(open(fichA),delimiter=";")
 class User(Persistent):
-    pass
+    def __init__(self):
+        self.id = ""
 
  
 storage2 = FileStorage.FileStorage('bd/id.fs')
 db2 = DB(storage2)
 connection2 = db2.open()
 root2 = connection2.root()
+if not root2.has_key('userdb2'):
+    from BTrees.OOBTree import OOBTree
+    root2['userdb2'] = OOBTree()
 
+userdb2 = root2['userdb2']
 
 storage = FileStorage.FileStorage('bd/contact.fs')
 db = DB(storage)
 connection = db.open()
 root = connection.root()
+if not root.has_key('userdb'):
+    from BTrees.OOBTree import OOBTree
+    root['userdb'] = OOBTree()
+
+userdb = root['userdb']
+
 
 newuser = User() 
 
@@ -64,11 +75,15 @@ for row in  cr1:
                 newuser.notes += " %s " % case
             compteur += 1
         k = root2.items()
-        newuser.id = len(k)
-        root2[newuser.id] = newuser.id
         transaction.commit()
-        root[newuser.id] = newuser
-        
+        newuser.id = len(k)
+        print len(k)
+        userdb2[newuser.id] = newuser.id
+        transaction.commit()
+        userdb[newuser.id] = newuser
+        transaction.commit()
+        print userdb2[newuser.id]
+        print userdb[newuser.id].societe
         transaction.commit()
 connection.close()
 connection2.close()
