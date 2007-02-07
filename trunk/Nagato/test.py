@@ -19,5 +19,7 @@ k =  root.items()
 for l in k :
    print l[1].societe
    print l[1].ad1
+   print l[1].prenom
+   print l[1].nom
 
 connection.close()
