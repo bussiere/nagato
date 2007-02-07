@@ -10,9 +10,8 @@ connection = db.open()
 root = connection.root()
 
 k =  root.items()
+print k
 for l in k :
-    newuser = l[1]
-    print newuser.id
-    print newuser.societe
+    print root[l[0]].societe
 
 connection.close()

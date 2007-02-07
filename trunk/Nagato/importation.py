@@ -31,7 +31,7 @@ ligne = ""
 for row in  cr1:
         compteur = 0
         for case in row :
-            
+            transaction.commit()
             newuser.notes = ""
             if compteur == 0 :
                 newuser.notes += " %s " % case
@@ -74,7 +74,6 @@ for row in  cr1:
         root[newuser.id] = newuser
         transaction.commit()
         print root2[newuser.id]
-        print root[newuser.id].societe
         transaction.commit()
 connection.close()
 connection2.close()
