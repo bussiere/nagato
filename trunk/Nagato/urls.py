@@ -1,5 +1,7 @@
 from django.conf.urls.defaults import *
 from Nagato.view import *
+
+
 urlpatterns = patterns('',
     # Example:
     # (r'^Nagato/', include('Nagato.foo.urls')),

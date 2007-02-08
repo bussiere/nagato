@@ -4,11 +4,15 @@ from django.http import HttpResponse
 from ZODB import FileStorage, DB 
 import transaction,re
 from persistent import Persistent
+import logging
+logging.getLogger("ZODB.FileStorage").setLevel(10000000)
+logging.getLogger("ZODB.lock_file").setLevel(10000000)
+logging.getLogger("ZODB.Connection").setLevel(10000000) 
 
 
 
-class User(Persistent):
-    pass
+
+
 
 def carnet(request):
     
@@ -179,9 +183,9 @@ def rechercher(request):
     db = DB(storage)
     connection = db.open()
     root = connection.root()
+    transaction.commit()
     k = root.items()
     transaction.commit()
-    connection.close()
     listec = []
     for l in k :
         if request.POST['rechercheb'] == "9":
@@ -239,7 +243,7 @@ def rechercher(request):
         if request.POST['rechercheb'] == "7":
             if re.search(request.POST['recherche'],l[1].notes)  :
                 listec.append(l[1])
-                
+    connection.close()           
     for contact in listec :
         html = html + "%s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s <br>" %(contact.societe,contact.fonction,contact.civ,contact.nom,contact.prenom,contact.ad1,contact.ad2,contact.ad3,contact.ad4,contact.cp,contact.ville,contact.mail1,contact.mail2,contact.tel1,contact.tel2,contact.portable1,contact.portable2,contact.annijour,contact.annimois,contact.anniannee)
     return HttpResponse(html)
@@ -341,6 +345,8 @@ def mas(request):
     return HttpResponse(html)
 
 def chermaj(request):
+
+    
     html = """
         <a href="../">Retour</A><br>
         """
@@ -412,3 +418,5 @@ def chermaj(request):
     for contact in listec :
         html = html + "%s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s <br>" %(contact.societe,contact.fonction,contact.nom,contact.prenom,contact.ad1,contact.ad2,contact.ad3,contact.ad4,contact.cp,contact.ville,contact.mail1,contact.mail2,contact.tel1,contact.tel2,contact.portable1,contact.portable2,contact.annijour,contact.annimois,contact.anniannee)
     return HttpResponse(html)
+
+
