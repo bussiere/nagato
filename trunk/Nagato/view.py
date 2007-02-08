@@ -5,6 +5,7 @@ from ZODB import FileStorage, DB
 import transaction,re
 from persistent import Persistent
 import logging
+import string
 logging.getLogger("ZODB.FileStorage").setLevel(10000000)
 logging.getLogger("ZODB.lock_file").setLevel(10000000)
 logging.getLogger("ZODB.Connection").setLevel(10000000) 
@@ -187,65 +188,70 @@ def rechercher(request):
     k = root.items()
     transaction.commit()
     listec = []
+    recherche = string.upper(request.POST['recherche'])
     for l in k :
         if request.POST['rechercheb'] == "9":
-            if re.search(request.POST['recherche'],l[1].societe) :
+            if re.search(recherche,l[1].societe) :
                 listec.append(l[1])
         if request.POST['rechercheb'] == "8":
-            if re.search(request.POST['recherche'],l[1].fonction) :
+            if re.search(recherche,l[1].fonction) :
                 listec.append(l[1])
         if request.POST['rechercheb'] == "1":
-            if re.search(request.POST['recherche'],l[1].nom) :
+            if re.search(recherche,l[1].nom) :
                 listec.append(l[1])
         if request.POST['rechercheb'] == "5":
-            if re.search(request.POST['recherche'],l[1].prenom) :
+            if re.search(recherche,l[1].prenom) :
                 listec.append(l[1])
         if request.POST['rechercheb'] == "6":
-            if re.search(request.POST['recherche'],l[1].ad1)  :
+            if re.search(recherche,l[1].ad1)  :
                 listec.append(l[1])
         if request.POST['rechercheb'] == "4":
-            if re.search(request.POST['recherche'],l[1].ad2)  :
+            if re.search(recherche,l[1].ad2)  :
                 listec.append(l[1])
         if request.POST['rechercheb'] == "19":
-            if re.search(request.POST['recherche'],l[1].ad3) :
+            if re.search(recherche,l[1].ad3) :
                 listec.append(l[1])
         if request.POST['rechercheb'] == "2":
-            if re.search(request.POST['recherche'],l[1].ad4) :
+            if re.search(recherche,l[1].ad4) :
                 listec.append(l[1])
         if request.POST['rechercheb'] == "15":
-            if re.search(request.POST['recherche'],l[1].cp) :
+            if re.search(recherche,l[1].cp) :
                 listec.append(l[1])
         if request.POST['rechercheb'] == "10":
-            if re.search(request.POST['recherche'],l[1].ville)  :
+            if re.search(recherche,l[1].ville)  :
                 listec.append(l[1])
         if request.POST['rechercheb'] == "3":
-            if re.search(request.POST['recherche'],l[1].mail1)  :
+            if re.search(recherche,l[1].mail1)  :
                 listec.append(l[1])
         if request.POST['rechercheb'] == "0":
-            if re.search(request.POST['recherche'],l[1].mail2)  :
+            if re.search(recherche,l[1].mail2)  :
                 listec.append(l[1])
         if request.POST['rechercheb'] == "11":
-            if re.search(request.POST['recherche'],l[1].tel1) :
+            if re.search(recherche,l[1].tel1) :
                 listec.append(l[1])
         if request.POST['rechercheb'] == "12":
-            if re.search(request.POST['recherche'],l[1].tel2)  :
+            if re.search(recherche,l[1].tel2)  :
                 listec.append(l[1])
         if request.POST['rechercheb'] == "17":
-            if re.search(request.POST['recherche'],l[1].portable1)  :
+            if re.search(recherche,l[1].portable1)  :
                 listec.append(l[1])
         if request.POST['rechercheb'] == "16":
-            if re.search(request.POST['recherche'],l[1].portable2)  :
+            if re.search(recherche,l[1].portable2)  :
                 listec.append(l[1])
         if request.POST['rechercheb'] == "14":
             anniversaire = "%s/%s/%s"%(l[1].annijour,l[1].annimois,l[1].anniannee)
-            if anniversaire == request.POST['recherche'] :
+            if anniversaire == recherche :
                 listec.append(l[1])
         if request.POST['rechercheb'] == "7":
-            if re.search(request.POST['recherche'],l[1].notes)  :
+            if re.search(recherche,l[1].notes)  :
                 listec.append(l[1])
     connection.close()           
+    html = html + """<table ><tr><td>Societe</td><td>fonction</td><td>Civ</td><td>Nom</td><td>Prenom</td><td>Ad1</td><td>Ad2</td><td>Ad3</td><td>Ad4</td><td>Cp</td><td>Ville</td><td>Mail1</td><td>Mail2</td><td width=100%>Tel1</td><td>Tel2</td><td>Portable1</td><td>POrtable2</td><td>Societe</td><td>Anniversaire</td><td>Notes</td></tr>"""
     for contact in listec :
-        html = html + "%s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s <br>" %(contact.societe,contact.fonction,contact.civ,contact.nom,contact.prenom,contact.ad1,contact.ad2,contact.ad3,contact.ad4,contact.cp,contact.ville,contact.mail1,contact.mail2,contact.tel1,contact.tel2,contact.portable1,contact.portable2,contact.annijour,contact.annimois,contact.anniannee)
+        
+        html = html + """<td><table><tr>%s</td></tr></table></td><td> %s </td><td>%s</td><td> %s </td><td>%s </td><td>%s </td><td>%s </td><td>%s </td><td>%s </td><td>%s </td><td>%s</td><td><a href="mailto:%s">%s</a> </td><td>  %s</td><td> %s </td><td>%s</td><td> %s </td><td>%s</td><td>%s %s %s</td><td> %s</td></tr></table> \n""" %(contact.societe,contact.fonction,contact.civ,contact.nom,contact.prenom,contact.ad1,contact.ad2,contact.ad3,contact.ad4,contact.cp,contact.ville,contact.mail1,contact.mail1,contact.mail2,contact.tel1,contact.tel2,contact.portable1,contact.portable2,contact.annijour,contact.annimois,contact.anniannee,contact.notes)
+        
+    html = html + "</table>"
     return HttpResponse(html)
 
 def chercher(request):
@@ -254,7 +260,7 @@ def chercher(request):
        Chercher
         <form action="rechercher/" method="post">
         <table><tr><td>
-<INPUT TYPE=radio NAME=rechercheb VALUE="9">Societe<br>
+<INPUT TYPE=radio NAME=rechercheb VALUE="9" CHECKED>Societe<br>
 <INPUT TYPE=radio NAME=rechercheb VALUE="8">fonction<br>
 </TD><TD>
 <INPUT TYPE=radio NAME=rechercheb VALUE="1">Nom<br>
@@ -356,7 +362,6 @@ def chermaj(request):
     root = connection.root()
     k = root.items()
     transaction.commit()
-    connection.close()
     listec = []
     for l in k :
         if request.POST['rechercheb'] == "9":
@@ -414,7 +419,7 @@ def chermaj(request):
         if request.POST['rechercheb'] == "7":
             if re.search(request.POST['recherche'],l[1].notes)  :
                 listec.append(l[1])
-                
+    connection.close()      
     for contact in listec :
         html = html + "%s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s <br>" %(contact.societe,contact.fonction,contact.nom,contact.prenom,contact.ad1,contact.ad2,contact.ad3,contact.ad4,contact.cp,contact.ville,contact.mail1,contact.mail2,contact.tel1,contact.tel2,contact.portable1,contact.portable2,contact.annijour,contact.annimois,contact.anniannee)
     return HttpResponse(html)
