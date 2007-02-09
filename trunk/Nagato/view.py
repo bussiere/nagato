@@ -1,5 +1,6 @@
 #! /usr/bin/env python
 # *-* coding: iso-8859-1 *-* 
+from manage import User
 from django.http import HttpResponse
 from ZODB import FileStorage, DB 
 import transaction,re
@@ -9,7 +10,7 @@ import string
 logging.getLogger("ZODB.FileStorage").setLevel(10000000)
 logging.getLogger("ZODB.lock_file").setLevel(10000000)
 logging.getLogger("ZODB.Connection").setLevel(10000000) 
-from manage import User
+
 
 
 
@@ -133,37 +134,42 @@ Importer un fichier csv.
 def rajoutercontact(request):
 
     newuser2 = User() 
-    storage = FileStorage.FileStorage('bd/contact.fs')
-    db = DB(storage)
-    connection = db.open()
-    root = connection.root()
-    k = root.items()
+    storage2 = FileStorage.FileStorage('bd/contact.fs')
+    db2 = DB(storage2)
+    connection2 = db2.open()
+    root2 = connection2.root()
+    k = root2.items()
     newuser2.id = len(k)
-    newuser2.societe = request.POST['societe']
-    newuser2.fonction = request.POST['fonction']
-    newuser2.civ = request.POST['civ']
-    newuser2.nom = request.POST['nom']
-    newuser2.prenom = request.POST['prenom']
-    newuser2.ad1 = request.POST['ad1']
-    newuser2.ad2 = request.POST['ad2']
-    newuser2.ad3 = request.POST['ad3']
-    newuser2.ad4 = request.POST['ad4']
-    newuser2.cp = request.POST['cp']
-    newuser2.ville = request.POST['ville']
-    newuser2.mail1 = request.POST['mail1']
-    newuser2.mail2 = request.POST['mail2']
-    newuser2.tel1 = request.POST['tel1']
-    newuser2.tel2 = request.POST['tel2']
-    newuser2.portable1 = request.POST['portable1']
-    newuser2.portable2 = request.POST['portable2']
-    newuser2.annijour = request.POST['annijour']
-    newuser2.annimois = request.POST['annimois']
-    newuser2.anniannee = request.POST['anniannee']
-    newuser2.notes = request.POST['notes']
-    root[newuser2.id] = newuser2
+    newuser2.societe = string.upper(request.POST['societe'])
+    newuser2.fonction = string.upper(request.POST['fonction'])
+    newuser2.civ = string.upper(request.POST['civ'])
+    newuser2.nom = string.upper(request.POST['nom'])
+    newuser2.prenom = string.upper(request.POST['prenom'])
+    newuser2.ad1 = string.upper(request.POST['ad1'])
+    newuser2.ad2 = string.upper(request.POST['ad2'])
+    newuser2.ad3 = string.upper(request.POST['ad3'])
+    newuser2.ad4 = string.upper(request.POST['ad4'])
+    newuser2.cp = string.upper(request.POST['cp'])
+    newuser2.ville = string.upper(request.POST['ville'])
+    newuser2.mail1 = string.upper(request.POST['mail1'])
+    newuser2.mail2 = string.upper(request.POST['mail2'])
+    newuser2.tel1 = string.upper(request.POST['tel1'])
+    newuser2.tel2 = string.upper(request.POST['tel2'])
+    newuser2.portable1 = string.upper(request.POST['portable1'])
+    newuser2.portable2 = string.upper(request.POST['portable2'])
+    newuser2.annijour = string.upper(request.POST['annijour'])
+    newuser2.annimois = string.upper(request.POST['annimois'])
+    newuser2.anniannee = string.upper(request.POST['anniannee'])
+    newuser2.notes = string.upper(request.POST['notes'])
     transaction.commit()
-    print root[newuser2.id].id
-    connection.close()
+    newuser2.id = len(k)
+    transaction.commit()
+    newuser2._p_changed = 1
+    root2[newuser2.id] = newuser2
+    print root2[newuser2.id].id
+    print root2[newuser2.id]
+    transaction.commit()
+    connection2.close()
     html = """<html><body>
         <a href="../">Retour</A><br>
 Contact rajouté.
@@ -181,6 +187,7 @@ def rechercher(request):
     transaction.commit()
     k = root.items()
     transaction.commit()
+    print root[220].fonction
     listec = []
     recherche = string.upper(request.POST['recherche'])
     for l in k :
@@ -239,6 +246,7 @@ def rechercher(request):
         if request.POST['rechercheb'] == "7":
             if re.search(recherche,l[1].notes)  :
                 listec.append(l[1])
+    print len(k)
     connection.close()           
     html = html + """<table ><tr><td>Societe</td><td>fonction</td><td>Civ</td><td>Nom</td><td>Prenom</td><td>Ad1</td><td>Ad2</td><td>Ad3</td><td>Ad4</td><td>Cp</td><td>Ville</td><td>Mail1</td><td>Mail2</td><td width=100%>Tel1</td><td>Tel2</td><td>Portable1</td><td>POrtable2</td><td>Societe</td><td>Anniversaire</td><td>Notes</td></tr>"""
     for contact in listec :

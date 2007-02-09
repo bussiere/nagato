@@ -6,14 +6,18 @@ import logging
 logging.getLogger("ZODB.FileStorage").setLevel(10000000)
 logging.getLogger("ZODB.lock_file").setLevel(10000000)
 logging.getLogger("ZODB.Connection").setLevel(10000000) 
-from manage import User
+
+
+class User(Persistent):
+     pass
+
    
 storage = FileStorage.FileStorage('bd/contact.fs')
 db = DB(storage)
 connection = db.open()
 root = connection.root()
 k = root.items()
-print root[210]
+print root[220]
 test = """
 for l in k :
    print l[1].id
