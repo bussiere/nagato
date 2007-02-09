@@ -177,7 +177,10 @@ Contact rajouté.
     return HttpResponse(html)
     
 def rechercher(request):
-    html = """
+    logging.getLogger("ZODB.FileStorage").setLevel(10000000)
+    logging.getLogger("ZODB.lock_file").setLevel(10000000)
+    logging.getLogger("ZODB.Connection").setLevel(10000000) 
+    html = """<html><body>
         <a href="../">Retour</A><br>
         """
     storage = FileStorage.FileStorage('bd/contact.fs')
@@ -186,8 +189,6 @@ def rechercher(request):
     root = connection.root()
     transaction.commit()
     k = root.items()
-    transaction.commit()
-    print root[220].fonction
     listec = []
     recherche = string.upper(request.POST['recherche'])
     for l in k :
@@ -246,17 +247,20 @@ def rechercher(request):
         if request.POST['rechercheb'] == "7":
             if re.search(recherche,l[1].notes)  :
                 listec.append(l[1])
-    print len(k)
-    connection.close()           
+    transaction.commit()
+    connection.close()          
     html = html + """<table ><tr><td>Societe</td><td>fonction</td><td>Civ</td><td>Nom</td><td>Prenom</td><td>Ad1</td><td>Ad2</td><td>Ad3</td><td>Ad4</td><td>Cp</td><td>Ville</td><td>Mail1</td><td>Mail2</td><td width=100%>Tel1</td><td>Tel2</td><td>Portable1</td><td>POrtable2</td><td>Societe</td><td>Anniversaire</td><td>Notes</td></tr>"""
     for contact in listec :
         
         html = html + """<tr><td>%s</td><td> %s </td><td>%s</td><td> %s </td><td>%s </td><td>%s </td><td>%s </td><td>%s </td><td>%s </td><td>%s </td><td>%s</td><td><a href="mailto:%s">%s</a> </td><td>  %s</td><td> %s </td><td>%s</td><td> %s </td><td>%s</td><td>%s %s %s</td><td> %s</td></tr>\n""" %(contact.societe,contact.fonction,contact.civ,contact.nom,contact.prenom,contact.ad1,contact.ad2,contact.ad3,contact.ad4,contact.cp,contact.ville,contact.mail1,contact.mail1,contact.mail2,contact.tel1,contact.tel2,contact.portable1,contact.portable2,contact.annijour,contact.annimois,contact.anniannee,contact.notes)
         
-    html = html + "</table>"
+    html = html + "</table></body></html>"
     return HttpResponse(html)
 
 def chercher(request):
+        logging.getLogger("ZODB.FileStorage").setLevel(10000000)
+        logging.getLogger("ZODB.lock_file").setLevel(10000000)
+        logging.getLogger("ZODB.Connection").setLevel(10000000) 
         html = """
         <a href="../">Retour</A><br>
        Chercher
@@ -355,7 +359,7 @@ def mas(request):
 def chermaj(request):
 
     
-    html = """
+    html = """<html><body>
         <a href="../">Retour</A><br>
         """
     storage = FileStorage.FileStorage('bd/contact.fs')
