@@ -9,34 +9,9 @@ import string
 logging.getLogger("ZODB.FileStorage").setLevel(10000000)
 logging.getLogger("ZODB.lock_file").setLevel(10000000)
 logging.getLogger("ZODB.Connection").setLevel(10000000) 
+from manage import User
 
 
-class User(Persistent):
-    def __init__(self):
-            self.id = ""
-            self.notes = ""
-            self.societe = "" 
-            self.fonction = "" 
-            self.civ = "" 
-            self.prenom = "" 
-            self.nom = "" 
-            self.ad1 = "" 
-            self.ad2 = "" 
-            self.ad3 = "" 
-            self.ad4 = "" 
-            self.cp = "" 
-            self.ville = "" 
-            self.tel1 = "" 
-            self.mail1 = ""
-            self.mail2 = ""
-            self.portable1 = ""
-            self.portable2 = ""
-            self.tel2 = "" 
-            self.notes = "" 
-            self.annijour = ""
-            self.annimois = ""
-            self.anniannee = ""
-            self._p_changed = 1
 
 
 
@@ -156,36 +131,38 @@ Importer un fichier csv.
         return HttpResponse(html)
     
 def rajoutercontact(request):
-    newuser = User() 
+
+    newuser2 = User() 
     storage = FileStorage.FileStorage('bd/contact.fs')
     db = DB(storage)
     connection = db.open()
     root = connection.root()
     k = root.items()
-    newuser.id = len(k)
-    newuser.societe = request.POST['societe']
-    newuser.fonction = request.POST['fonction']
-    newuser.civ = request.POST['civ']
-    newuser.nom = request.POST['nom']
-    newuser.prenom = request.POST['prenom']
-    newuser.ad1 = request.POST['ad1']
-    newuser.ad2 = request.POST['ad2']
-    newuser.ad3 = request.POST['ad3']
-    newuser.ad4 = request.POST['ad4']
-    newuser.cp = request.POST['cp']
-    newuser.ville = request.POST['ville']
-    newuser.mail1 = request.POST['mail1']
-    newuser.mail2 = request.POST['mail2']
-    newuser.tel1 = request.POST['tel1']
-    newuser.tel2 = request.POST['tel2']
-    newuser.portable1 = request.POST['portable1']
-    newuser.portable2 = request.POST['portable2']
-    newuser.annijour = request.POST['annijour']
-    newuser.annimois = request.POST['annimois']
-    newuser.anniannee = request.POST['anniannee']
-    newuser.notes = request.POST['notes']
-    root[newuser.id] = newuser
+    newuser2.id = len(k)
+    newuser2.societe = request.POST['societe']
+    newuser2.fonction = request.POST['fonction']
+    newuser2.civ = request.POST['civ']
+    newuser2.nom = request.POST['nom']
+    newuser2.prenom = request.POST['prenom']
+    newuser2.ad1 = request.POST['ad1']
+    newuser2.ad2 = request.POST['ad2']
+    newuser2.ad3 = request.POST['ad3']
+    newuser2.ad4 = request.POST['ad4']
+    newuser2.cp = request.POST['cp']
+    newuser2.ville = request.POST['ville']
+    newuser2.mail1 = request.POST['mail1']
+    newuser2.mail2 = request.POST['mail2']
+    newuser2.tel1 = request.POST['tel1']
+    newuser2.tel2 = request.POST['tel2']
+    newuser2.portable1 = request.POST['portable1']
+    newuser2.portable2 = request.POST['portable2']
+    newuser2.annijour = request.POST['annijour']
+    newuser2.annimois = request.POST['annimois']
+    newuser2.anniannee = request.POST['anniannee']
+    newuser2.notes = request.POST['notes']
+    root[newuser2.id] = newuser2
     transaction.commit()
+    print root[newuser2.id].id
     connection.close()
     html = """<html><body>
         <a href="../">Retour</A><br>

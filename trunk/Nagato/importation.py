@@ -2,36 +2,10 @@ import csv,fileinput,glob,string,os,unicodedata,sys
 from ZODB import FileStorage, DB 
 import transaction,re
 from persistent import Persistent
-from persistent import Persistent
-
+from manage import User
 
 fichA= "clients.csv"
 cr1 = csv.reader(open(fichA),delimiter=";")
-class User(Persistent):
-    def __init__(self):
-            self.notes = ""
-            self.societe = "" 
-            self.fonction = "" 
-            self.civ = "" 
-            self.prenom = "" 
-            self.nom = "" 
-            self.ad1 = "" 
-            self.ad2 = "" 
-            self.ad3 = "" 
-            self.ad4 = "" 
-            self.cp = "" 
-            self.ville = "" 
-            self.tel1 = "" 
-            self.mail1 = ""
-            self.mail2 = ""
-            self.portable1 = ""
-            self.portable2 = ""
-            self.tel2 = "" 
-            self.notes = "" 
-            self.annijour = ""
-            self.annimois = ""
-            self.anniannee = ""
-            self._p_changed = 1
 
 
  
@@ -89,7 +63,6 @@ for row in  cr1:
         transaction.commit()
         newuser.id = len(k)
         transaction.commit()
-        newuser._p_changed
         newuser._p_changed = 1
         root[newuser.id] = newuser
         transaction.commit()

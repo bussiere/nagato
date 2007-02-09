@@ -32,7 +32,7 @@ class User(Persistent):
             self.annijour = ""
             self.annimois = ""
             self.anniannee = ""
-            self._p_changed = 1
+
 
 
 if __name__ == "__main__":
