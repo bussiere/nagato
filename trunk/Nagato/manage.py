@@ -9,6 +9,7 @@ except ImportError:
 from persistent import Persistent
 class User(Persistent):
     def __init__(self):
+            self.id = ""
             self.notes = ""
             self.societe = "" 
             self.fonction = "" 

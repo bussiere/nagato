@@ -11,7 +11,32 @@ logging.getLogger("ZODB.lock_file").setLevel(10000000)
 logging.getLogger("ZODB.Connection").setLevel(10000000) 
 
 
-
+class User(Persistent):
+    def __init__(self):
+            self.id = ""
+            self.notes = ""
+            self.societe = "" 
+            self.fonction = "" 
+            self.civ = "" 
+            self.prenom = "" 
+            self.nom = "" 
+            self.ad1 = "" 
+            self.ad2 = "" 
+            self.ad3 = "" 
+            self.ad4 = "" 
+            self.cp = "" 
+            self.ville = "" 
+            self.tel1 = "" 
+            self.mail1 = ""
+            self.mail2 = ""
+            self.portable1 = ""
+            self.portable2 = ""
+            self.tel2 = "" 
+            self.notes = "" 
+            self.annijour = ""
+            self.annimois = ""
+            self.anniannee = ""
+            self._p_changed = 1
 
 
 
@@ -132,20 +157,12 @@ Importer un fichier csv.
     
 def rajoutercontact(request):
     newuser = User() 
-    storage = FileStorage.FileStorage('bd/id.fs')
+    storage = FileStorage.FileStorage('bd/contact.fs')
     db = DB(storage)
     connection = db.open()
     root = connection.root()
     k = root.items()
     newuser.id = len(k)
-    root[newuser.id] = newuser.id
-    transaction.commit()
-    connection.close()
-    storage = FileStorage.FileStorage('bd/contact.fs')
-    db = DB(storage)
-    connection = db.open()
-    root = connection.root()
-
     newuser.societe = request.POST['societe']
     newuser.fonction = request.POST['fonction']
     newuser.civ = request.POST['civ']
@@ -249,7 +266,7 @@ def rechercher(request):
     html = html + """<table ><tr><td>Societe</td><td>fonction</td><td>Civ</td><td>Nom</td><td>Prenom</td><td>Ad1</td><td>Ad2</td><td>Ad3</td><td>Ad4</td><td>Cp</td><td>Ville</td><td>Mail1</td><td>Mail2</td><td width=100%>Tel1</td><td>Tel2</td><td>Portable1</td><td>POrtable2</td><td>Societe</td><td>Anniversaire</td><td>Notes</td></tr>"""
     for contact in listec :
         
-        html = html + """<td><table><tr>%s</td></tr></table></td><td> %s </td><td>%s</td><td> %s </td><td>%s </td><td>%s </td><td>%s </td><td>%s </td><td>%s </td><td>%s </td><td>%s</td><td><a href="mailto:%s">%s</a> </td><td>  %s</td><td> %s </td><td>%s</td><td> %s </td><td>%s</td><td>%s %s %s</td><td> %s</td></tr></table> \n""" %(contact.societe,contact.fonction,contact.civ,contact.nom,contact.prenom,contact.ad1,contact.ad2,contact.ad3,contact.ad4,contact.cp,contact.ville,contact.mail1,contact.mail1,contact.mail2,contact.tel1,contact.tel2,contact.portable1,contact.portable2,contact.annijour,contact.annimois,contact.anniannee,contact.notes)
+        html = html + """<tr><td>%s</td><td> %s </td><td>%s</td><td> %s </td><td>%s </td><td>%s </td><td>%s </td><td>%s </td><td>%s </td><td>%s </td><td>%s</td><td><a href="mailto:%s">%s</a> </td><td>  %s</td><td> %s </td><td>%s</td><td> %s </td><td>%s</td><td>%s %s %s</td><td> %s</td></tr>\n""" %(contact.societe,contact.fonction,contact.civ,contact.nom,contact.prenom,contact.ad1,contact.ad2,contact.ad3,contact.ad4,contact.cp,contact.ville,contact.mail1,contact.mail1,contact.mail2,contact.tel1,contact.tel2,contact.portable1,contact.portable2,contact.annijour,contact.annimois,contact.anniannee,contact.notes)
         
     html = html + "</table>"
     return HttpResponse(html)

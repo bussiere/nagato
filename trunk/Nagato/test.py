@@ -10,6 +10,7 @@ logging.getLogger("ZODB.Connection").setLevel(10000000)
 
 class User(Persistent):
     def __init__(self):
+            self.id = ""
             self.notes = ""
             self.societe = "" 
             self.fonction = "" 
@@ -36,6 +37,7 @@ root = connection.root()
 
 k =  root.items()
 for l in k :
+   print l[1].id
    print l[1].societe
    print l[1].ad1
    print l[1].ad2
