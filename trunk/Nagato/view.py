@@ -7,6 +7,7 @@ import transaction,re
 from persistent import Persistent
 import logging
 import string
+from ZEO import ClientStorage
 logging.getLogger("ZODB.FileStorage").setLevel(10000000)
 logging.getLogger("ZODB.lock_file").setLevel(10000000)
 logging.getLogger("ZODB.Connection").setLevel(10000000) 
@@ -134,7 +135,8 @@ Importer un fichier csv.
 def rajoutercontact(request):
 
     newuser2 = User() 
-    storage2 = FileStorage.FileStorage('bd/contact.fs')
+    addr = '192.168.1.201', 8000
+    storage = ClientStorage.ClientStorage(addr)
     db2 = DB(storage2)
     connection2 = db2.open()
     root2 = connection2.root()
@@ -183,7 +185,8 @@ def rechercher(request):
     html = """<html><body>
         <a href="../">Retour</A><br>
         """
-    storage = FileStorage.FileStorage('bd/contact.fs')
+    addr = '192.168.1.201', 8000
+    storage = ClientStorage.ClientStorage(addr)
     db = DB(storage)
     connection = db.open()
     root = connection.root()
@@ -362,7 +365,8 @@ def chermaj(request):
     html = """<html><body>
         <a href="../">Retour</A><br>
         """
-    storage = FileStorage.FileStorage('bd/contact.fs')
+    addr = '192.168.1.201', 8000
+    storage = ClientStorage.ClientStorage(addr)
     db = DB(storage)
     connection = db.open()
     root = connection.root()

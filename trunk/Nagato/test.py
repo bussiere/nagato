@@ -3,6 +3,7 @@ from ZODB import FileStorage, DB
 import transaction,re
 from persistent import Persistent
 import logging
+from ZEO import ClientStorage
 logging.getLogger("ZODB.FileStorage").setLevel(10000000)
 logging.getLogger("ZODB.lock_file").setLevel(10000000)
 logging.getLogger("ZODB.Connection").setLevel(10000000) 
@@ -11,8 +12,8 @@ logging.getLogger("ZODB.Connection").setLevel(10000000)
 class User(Persistent):
      pass
 
-   
-storage = FileStorage.FileStorage('bd/contact.fs')
+addr = '192.168.1.201', 8000
+storage = ClientStorage.ClientStorage(addr)
 db = DB(storage)
 connection = db.open()
 root = connection.root()
