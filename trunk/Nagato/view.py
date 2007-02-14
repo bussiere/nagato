@@ -314,39 +314,39 @@ def chercher(request):
 def mas(request):
     html = """
         <a href="../">Retour</A><br>
-        Mettre a jour / supprimer
+       Mettre a jour
         <form action="chermaj/" method="post">
         <table><tr><td>
-<INPUT TYPE=checkbox NAME=Societe VALUE=Societe>Societe<br>
-<INPUT TYPE=checkbox NAME=fonction VALUE=fonction>fonction<br>
+<INPUT TYPE=radio NAME=rechercheb VALUE="9" CHECKED>Societe<br>
+<INPUT TYPE=radio NAME=rechercheb VALUE="8">fonction<br>
 </TD><TD>
-<INPUT TYPE=checkbox NAME=Nom VALUE=Nom>Nom<br>
-<INPUT TYPE=checkbox NAME=Prenom VALUE=Prenom>Prenom<br>
+<INPUT TYPE=radio NAME=rechercheb VALUE="1">Nom<br>
+<INPUT TYPE=radio NAME=rechercheb VALUE="5">Prenom<br>
 </td><TD>
-<INPUT TYPE=checkbox NAME=ad1 VALUE=ad1>ad1<br>
-<INPUT TYPE=checkbox NAME=ad2 VALUE=ad2>ad2<br>
+<INPUT TYPE=radio NAME=rechercheb VALUE="6">ad1<br>
+<INPUT TYPE=radio NAME=rechercheb VALUE="4">ad2<br>
 </td>
 <TD>
-<INPUT TYPE=checkbox NAME=ad3 VALUE=ad3>ad3<br>
-<INPUT TYPE=checkbox NAME=ad4 VALUE=ad4>ad4<br>
+<INPUT TYPE=radio NAME=rechercheb VALUE="19">ad3<br>
+<INPUT TYPE=radio NAME=rechercheb VALUE="2">ad4<br>
 </td>
 <TD>
-<INPUT TYPE=checkbox NAME=cp VALUE=cp>cp<br>
-<INPUT TYPE=checkbox NAME=villeVALUE=ville>ville<br>
+<INPUT TYPE=radio NAME=rechercheb VALUE="15">cp<br>
+<INPUT TYPE=radio NAME=rechercheb VALUE="10">ville<br>
 </td><TD>
-<INPUT TYPE=checkbox NAME=mail1 VALUE=mail1>mail1<br>
-<INPUT TYPE=checkbox NAME=mail2 VALUE=mail2>mail2<br>
+<INPUT TYPE=radio NAME=rechercheb VALUE="3">mail1<br>
+<INPUT TYPE=radio NAME=rechercheb VALUE="0">mail2<br>
 </td>
 <TD>
-<INPUT TYPE=checkbox NAME=tel1 VALUE=mail1>tel1<br>
-<INPUT TYPE=checkbox NAME=tel2 VALUE=mail2>tel2<br>
+<INPUT TYPE=radio NAME=rechercheb VALUE="11">tel1<br>
+<INPUT TYPE=radio NAME=rechercheb VALUE="12">tel2<br>
 </td><TD>
-<INPUT TYPE=checkbox NAME=portable1 VALUE=mail1>portable1<br>
-<INPUT TYPE=checkbox NAME=portable2 VALUE=mail2>portable2<br>
+<INPUT TYPE=radio NAME=rechercheb VALUE="17">portable1<br>
+<INPUT TYPE=radio NAME=rechercheb VALUE="16">portable2<br>
 </td>
 <TD>
-<INPUT TYPE=checkbox NAME=anniversaire VALUE=mail1>anniversaire<br>
-<INPUT TYPE=checkbox NAME=note VALUE=mail2>note<br>
+<INPUT TYPE=radio NAME=rechercheb VALUE="14">anniversaire<br>
+<INPUT TYPE=radio NAME=rechercheb VALUE="7">note<br>
 </td>
 </tr>
 </table><br>
@@ -355,13 +355,15 @@ def mas(request):
   <p><input type="submit" value="Valider"/></p> 
         <p><input type="reset" value="Effacer"/></p>
 </form>
-
         """
     return HttpResponse(html)
 
 def chermaj(request):
 
     
+    logging.getLogger("ZODB.FileStorage").setLevel(10000000)
+    logging.getLogger("ZODB.lock_file").setLevel(10000000)
+    logging.getLogger("ZODB.Connection").setLevel(10000000) 
     html = """<html><body>
         <a href="../">Retour</A><br>
         """
@@ -370,68 +372,75 @@ def chermaj(request):
     db = DB(storage)
     connection = db.open()
     root = connection.root()
-    k = root.items()
     transaction.commit()
+    k = root.items()
     listec = []
+    recherche = string.upper(request.POST['recherche'])
     for l in k :
         if request.POST['rechercheb'] == "9":
-            if re.search(request.POST['recherche'],l[1].societe) :
+            if re.search(recherche,l[1].societe) :
                 listec.append(l[1])
         if request.POST['rechercheb'] == "8":
-            if re.search(request.POST['recherche'],l[1].fonction) :
+            if re.search(recherche,l[1].fonction) :
                 listec.append(l[1])
         if request.POST['rechercheb'] == "1":
-            if re.search(request.POST['recherche'],l[1].nom) :
+            if re.search(recherche,l[1].nom) :
                 listec.append(l[1])
         if request.POST['rechercheb'] == "5":
-            if re.search(request.POST['recherche'],l[1].prenom) :
+            if re.search(recherche,l[1].prenom) :
                 listec.append(l[1])
         if request.POST['rechercheb'] == "6":
-            if re.search(request.POST['recherche'],l[1].ad1)  :
+            if re.search(recherche,l[1].ad1)  :
                 listec.append(l[1])
         if request.POST['rechercheb'] == "4":
-            if re.search(request.POST['recherche'],l[1].ad2)  :
+            if re.search(recherche,l[1].ad2)  :
                 listec.append(l[1])
         if request.POST['rechercheb'] == "19":
-            if re.search(request.POST['recherche'],l[1].ad3) :
+            if re.search(recherche,l[1].ad3) :
                 listec.append(l[1])
         if request.POST['rechercheb'] == "2":
-            if re.search(request.POST['recherche'],l[1].ad4) :
+            if re.search(recherche,l[1].ad4) :
                 listec.append(l[1])
         if request.POST['rechercheb'] == "15":
-            if re.search(request.POST['recherche'],l[1].cp) :
+            if re.search(recherche,l[1].cp) :
                 listec.append(l[1])
         if request.POST['rechercheb'] == "10":
-            if re.search(request.POST['recherche'],l[1].ville)  :
+            if re.search(recherche,l[1].ville)  :
                 listec.append(l[1])
         if request.POST['rechercheb'] == "3":
-            if re.search(request.POST['recherche'],l[1].mail1)  :
+            if re.search(recherche,l[1].mail1)  :
                 listec.append(l[1])
         if request.POST['rechercheb'] == "0":
-            if re.search(request.POST['recherche'],l[1].mail2)  :
+            if re.search(recherche,l[1].mail2)  :
                 listec.append(l[1])
         if request.POST['rechercheb'] == "11":
-            if re.search(request.POST['recherche'],l[1].tel1) :
+            if re.search(recherche,l[1].tel1) :
                 listec.append(l[1])
         if request.POST['rechercheb'] == "12":
-            if re.search(request.POST['recherche'],l[1].tel2)  :
+            if re.search(recherche,l[1].tel2)  :
                 listec.append(l[1])
         if request.POST['rechercheb'] == "17":
-            if re.search(request.POST['recherche'],l[1].portable1)  :
+            if re.search(recherche,l[1].portable1)  :
                 listec.append(l[1])
         if request.POST['rechercheb'] == "16":
-            if re.search(request.POST['recherche'],l[1].portable2)  :
+            if re.search(recherche,l[1].portable2)  :
                 listec.append(l[1])
         if request.POST['rechercheb'] == "14":
             anniversaire = "%s/%s/%s"%(l[1].annijour,l[1].annimois,l[1].anniannee)
-            if anniversaire == request.POST['recherche'] :
+            if anniversaire == recherche :
                 listec.append(l[1])
         if request.POST['rechercheb'] == "7":
-            if re.search(request.POST['recherche'],l[1].notes)  :
+            if re.search(recherche,l[1].notes)  :
                 listec.append(l[1])
-    connection.close()      
+    transaction.commit()
+    connection.close()          
+    html = html + """<form action="chermaj/" method="post"><table ><tr><td></td><td>Societe</td><td>fonction</td><td>Civ</td><td>Nom</td><td>Prenom</td><td>Ad1</td><td>Ad2</td><td>Ad3</td><td>Ad4</td><td>Cp</td><td>Ville</td><td>Mail1</td><td>Mail2</td><td width=100%>Tel1</td><td>Tel2</td><td>Portable1</td><td>POrtable2</td><td>Societe</td><td>Anniversaire</td><td>Notes</td></tr>"""
     for contact in listec :
-        html = html + "%s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s <br>" %(contact.societe,contact.fonction,contact.nom,contact.prenom,contact.ad1,contact.ad2,contact.ad3,contact.ad4,contact.cp,contact.ville,contact.mail1,contact.mail2,contact.tel1,contact.tel2,contact.portable1,contact.portable2,contact.annijour,contact.annimois,contact.anniannee)
+        
+        html = html + """<tr><td>
+<INPUT TYPE=radio NAME=id VALUE="%s" ></td><td>%s</td><td> %s </td><td>%s</td><td> %s </td><td>%s </td><td>%s </td><td>%s </td><td>%s </td><td>%s </td><td>%s </td><td>%s</td><td><a href="mailto:%s">%s</a> </td><td>  %s</td><td> %s </td><td>%s</td><td> %s </td><td>%s</td><td>%s %s %s</td><td> %s</td></tr>\n""" %(contact.id,contact.societe,contact.fonction,contact.civ,contact.nom,contact.prenom,contact.ad1,contact.ad2,contact.ad3,contact.ad4,contact.cp,contact.ville,contact.mail1,contact.mail1,contact.mail2,contact.tel1,contact.tel2,contact.portable1,contact.portable2,contact.annijour,contact.annimois,contact.anniannee,contact.notes)
+        
+    html = html + """</table><input type="submit" value="Modifier"/></form></body></html>"""
     return HttpResponse(html)
 
 
