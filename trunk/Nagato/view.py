@@ -459,7 +459,18 @@ def modif(request):
     transaction.commit()
     k = root.items()
     listec = []
-    recherche = string.upper(request.POST['id'])
+    recherche = int(request.POST['id'])
     for l in k :
-        if re.search(recherche,l[1].id) :
+        print l[1].id
+        if recherche == l[1].id :
                 listec.append(l[1])
+                print "bon"
+    html = html + """<table ><tr><td>Societe</td><td>fonction</td><td>Civ</td><td>Nom</td><td>Prenom</td><td>Ad1</td><td>Ad2</td><td>Ad3</td><td>Ad4</td><td>Cp</td><td>Ville</td><td>Mail1</td><td>Mail2</td><td width=100%>Tel1</td><td>Tel2</td><td>Portable1</td><td>POrtable2</td><td>Societe</td><td>Anniversaire</td><td>Notes</td></tr>"""
+    for contact in listec :
+        html = html + """<tr><td>%s</td><td> %s </td><td>%s</td><td> %s </td><td>%s </td><td>%s </td><td>%s </td><td>%s </td><td>%s </td><td>%s </td><td>%s</td><td><a href="mailto:%s">%s</a> </td><td>  %s</td><td> %s </td><td>%s</td><td> %s </td><td>%s</td><td>%s %s %s</td><td> %s</td></tr>\n""" %(contact.societe,contact.fonction,contact.civ,contact.nom,contact.prenom,contact.ad1,contact.ad2,contact.ad3,contact.ad4,contact.cp,contact.ville,contact.mail1,contact.mail1,contact.mail2,contact.tel1,contact.tel2,contact.portable1,contact.portable2,contact.annijour,contact.annimois,contact.anniannee,contact.notes)
+    html = html + "</table></body></html>"
+    transaction.commit()
+    connection.close()  
+    return HttpResponse(html)
+                
+                
