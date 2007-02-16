@@ -464,11 +464,117 @@ def modif(request):
         print l[1].id
         if recherche == l[1].id :
                 listec.append(l[1])
-                print "bon"
-    html = html + """<table ><tr><td>Societe</td><td>fonction</td><td>Civ</td><td>Nom</td><td>Prenom</td><td>Ad1</td><td>Ad2</td><td>Ad3</td><td>Ad4</td><td>Cp</td><td>Ville</td><td>Mail1</td><td>Mail2</td><td width=100%>Tel1</td><td>Tel2</td><td>Portable1</td><td>POrtable2</td><td>Societe</td><td>Anniversaire</td><td>Notes</td></tr>"""
     for contact in listec :
-        html = html + """<tr><td>%s</td><td> %s </td><td>%s</td><td> %s </td><td>%s </td><td>%s </td><td>%s </td><td>%s </td><td>%s </td><td>%s </td><td>%s</td><td><a href="mailto:%s">%s</a> </td><td>  %s</td><td> %s </td><td>%s</td><td> %s </td><td>%s</td><td>%s %s %s</td><td> %s</td></tr>\n""" %(contact.societe,contact.fonction,contact.civ,contact.nom,contact.prenom,contact.ad1,contact.ad2,contact.ad3,contact.ad4,contact.cp,contact.ville,contact.mail1,contact.mail1,contact.mail2,contact.tel1,contact.tel2,contact.portable1,contact.portable2,contact.annijour,contact.annimois,contact.anniannee,contact.notes)
-    html = html + "</table></body></html>"
+        newuser2  = contact
+     = string.upper(request.POST['mail1'])
+    newuser2.mail2 = string.upper(request.POST['mail2'])
+    newuser2.tel1 = string.upper(request.POST['tel1'])
+    newuser2.tel2 = string.upper(request.POST['tel2'])
+    newuser2.portable1 = string.upper(request.POST['portable1'])
+    newuser2.portable2 = string.upper(request.POST['portable2'])
+    newuser2.annijour = string.upper(request.POST['annijour'])
+    newuser2.annimois = string.upper(request.POST['annimois'])
+    newuser2.anniannee = string.upper(request.POST['anniannee'])
+    newuser2.notes = string.upper(request.POST['notes'])
+    html = """<html><body>
+        <a href="../">Retour</A><br>
+        rajouter un contact
+                <form action="rajoutercontact/" method="post"> 
+                <input type="hidden" name="id" value="%s"
+        <table><tr><td>
+        <p>Societe</p> 
+              <input type="text" name="societe"    size="35" maxlength="40" value="%s"/></td> <td>
+        <p>Fonction</p> 
+              <input type="text" name="fonction"    size="35" maxlength="40" value="%s"/></td></tr>
+        <tr>
+         <td><p>Civ</p> 
+         <input type="text" name="civ"    size="35" maxlength="40" value="%s"/> </td>
+        <td><p>Nom</p> 
+              <input type="text" name="nom"    size="35" maxlength="40" value="%s"/> </td> 
+        <td><p>Prenom</p> 
+         <input type="text" name="prenom"    size="35" maxlength="40" value="%s"/> </td> </tr>
+         <tr><td><p>AD1</p> 
+              <input type="text" name="ad1"    size="38" maxlength="40"/ value="%s"> </td> 
+         <td><p>AD2</p> 
+              <input type="text" name="ad2"    size="38" maxlength="40" value="%s"/></td> 
+              <td><p>AD3</p> 
+              <input type="text" name="ad3"    size="38" maxlength="40" value="%s"/></td>
+         <td><p>AD4</p> 
+              <input type="text" name="ad4"    size="38" maxlength="40" value="%s"/></td> </tr>
+        <tr><td><p>CP</p> 
+              <input type="text" name="cp"    size="38" maxlength="40" value="%s"/> </td> 
+        <td><p>VILLE</p> 
+              <input type="text" name="ville"    size="38" maxlength="40" value="%s"/> </td> </tr>
+        <tr><td> <p>MAIL1</p> 
+              <input type="text" name="mail1"    size="38" maxlength="40" value="%s"/> </td> 
+        <td><p>Mail2</p> 
+              <input type="text" name="mail2"    size="38" maxlength="40"/> </td> </tr>
+       <tr> <td><p>TEL1</p> 
+              <input type="text" name="tel1"    size="15" maxlength="40"/>  </td> 
+        <td><p>TEL2</p> 
+              <input type="text" name="tel2"    size="15" maxlength="40"/> </td> </tr>
+         <tr><td><p>PORTABLE1</p> 
+              <input type="text" name="portable1"    size="15" maxlength="40"/></td> 
+           <td><p>PORTABLE2</p> 
+              <input type="text" name="portable2"    size="15" maxlength="40"/> </td></tr> 
+          <tr><td><P>Anniversaire</p>
+          <SELECT NAME=annijour>
+<OPTION>1
+<OPTION>2
+<OPTION>3
+<OPTION>4
+<OPTION>5
+<OPTION>6
+<OPTION>7
+<OPTION>8
+<OPTION>9
+<OPTION>10
+<OPTION>11
+<OPTION>12
+<OPTION>13
+<OPTION>14
+<OPTION>15
+<OPTION>16
+<OPTION>17
+<OPTION>18
+<OPTION>19
+<OPTION>20
+<OPTION>21
+<OPTION>22
+<OPTION>23
+<OPTION>24
+<OPTION>25
+<OPTION>26
+<OPTION>27
+<OPTION>28
+<OPTION>29
+<OPTION>30
+<OPTION>31
+</SELECT> 
+<SELECT NAME=annimois>
+<OPTION>janvier
+<OPTION>fevrier
+<OPTION>mars
+<OPTION>avril
+<OPTION>mai
+<OPTION>juin
+<OPTION>juillet
+<OPTION>aout
+<OPTION>septembre
+<OPTION>octobre
+<OPTION>novembre
+<OPTION>decembre
+</SELECT> 
+              <input type="text" name="anniannee"    size="15" maxlength="40"/> </td> </tr>
+         <tr><td colspan="2"> <p>Notes</p> 
+              <TEXTAREA NAME="notes" ROWS=8 COLS=50></TEXTAREA>
+               </td> </tr>
+              </table>
+        <p><input type="submit" value="Valider"/></p> 
+        <p><input type="reset" value="Effacer"/></p> 
+    </form> 
+Importer un fichier csv.
+        </body></html>""" %(newuser2.id,newuser2.societe,newuser2.fonction,newuser2.civ,newuser2.nom,newuser2.prenom,newuser2.ad1,newuser2.ad2,newuser2.ad3,newuser2.ad4,newuser2.cp,newuser2.ville,newuser2.mail1)
     transaction.commit()
     connection.close()  
     return HttpResponse(html)
