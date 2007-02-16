@@ -132,6 +132,51 @@ Importer un fichier csv.
         </body></html>"""
         return HttpResponse(html)
     
+def modifiercontact (request):
+    newuser2 = User() 
+    addr = '192.168.1.201', 8000
+    storage = ClientStorage.ClientStorage(addr)
+    db2 = DB(storage)
+    connection2 = db2.open()
+    root2 = connection2.root()
+    k = root2.items()
+    newuser2.id = int(request.POST['id'])
+    if request.POST['effacer'] != "-1" :
+        newuser2.societe = string.upper(request.POST['societe'])
+        newuser2.fonction = string.upper(request.POST['fonction'])
+        newuser2.civ = string.upper(request.POST['civ'])
+        newuser2.nom = string.upper(request.POST['nom'])
+        newuser2.prenom = string.upper(request.POST['prenom'])
+        newuser2.ad1 = string.upper(request.POST['ad1'])
+        newuser2.ad2 = string.upper(request.POST['ad2'])
+        newuser2.ad3 = string.upper(request.POST['ad3'])
+        newuser2.ad4 = string.upper(request.POST['ad4'])
+        newuser2.cp = string.upper(request.POST['cp'])
+        newuser2.ville = string.upper(request.POST['ville'])
+        newuser2.mail1 = string.upper(request.POST['mail1'])
+        newuser2.mail2 = string.upper(request.POST['mail2'])
+        newuser2.tel1 = string.upper(request.POST['tel1'])
+        newuser2.tel2 = string.upper(request.POST['tel2'])
+        newuser2.portable1 = string.upper(request.POST['portable1'])
+        newuser2.portable2 = string.upper(request.POST['portable2'])
+        newuser2.annijour = string.upper(request.POST['annijour'])
+        newuser2.annimois = string.upper(request.POST['annimois'])
+        newuser2.anniannee = string.upper(request.POST['anniannee'])
+        newuser2.notes = string.upper(request.POST['notes'])
+        transaction.commit()
+        newuser2.id = request.POST['id']
+        transaction.commit()
+        newuser2._p_changed = 1
+    root2[newuser2.id] = newuser2
+    
+    transaction.commit()
+    connection2.close()
+    html = """<html><body>
+        <a href="../../../">Retour</A><br>
+Contact Modifié
+        </body></html>"""
+    return HttpResponse(html)
+      
 def rajoutercontact(request):
 
     newuser2 = User() 
@@ -251,11 +296,18 @@ def rechercher(request):
             if re.search(recherche,l[1].notes)  :
                 listec.append(l[1])
     transaction.commit()
-    connection.close()          
-    html = html + """<table ><tr><td>Societe</td><td>fonction</td><td>Civ</td><td>Nom</td><td>Prenom</td><td>Ad1</td><td>Ad2</td><td>Ad3</td><td>Ad4</td><td>Cp</td><td>Ville</td><td>Mail1</td><td>Mail2</td><td width=100%>Tel1</td><td>Tel2</td><td>Portable1</td><td>POrtable2</td><td>Societe</td><td>Anniversaire</td><td>Notes</td></tr>"""
-    for contact in listec :
+    connection.close()     
+    
+    if request.POST['csv'] == "-1":
+        html = html + """<table width="100%"><tr width="100"><td width="100">Societe</td><td width="100">fonction</td><td width="100">Civ</td><td width="100%">Nom</td><td width="100%">Prenom</td><td width="100%">Ad1</td><td width="100%">Ad2</td><td width="100%">Ad3</td><td width="100%">Ad4</td><td width="100%">Cp</td><td width="100%">Ville</td><td width="100%"> Mail1</td><td width="100%">Mail2</td><td width="800">Tel1</td><td width="100">Tel2</td><td width="100%">Portable1</td><td width="100%">POrtable2</td><td width="100%">Anniversaire</td><td width="100%">Notes</td></tr>"""
+        for contact in listec :
+            html = html + """<tr width="100%">"""
+            html = html + """<td width="100"><table width="300"><tr width="300"><td width="300">%s</td></tr></table></td><td width="100"> %s </td><td width="100">%s</td><td width="100"> %s </td><td width="100">%s </td><td width="100"><table width="300"><tr width="300"><td width="300"> %s </td></tr></table></td><td width="100"><table width="300"><tr width="300"><td width="300">%s</td></tr></table> </td><td width="100"><table width="300"><tr width="300"><td width="300">%s </td></tr></table></td><td width="100"><table width="300"><tr width="300"><td width="300">%s </td></tr></table></td><td width="100">%s </td><td width="100"><table width="300"><tr width="300"><td width="300">%s</td></tr></table></td><td width="100"><a href="mailto:%s">%s</a> </td><td width="100">  %s</td><td width="100"><table width="200"><tr width="200"><td width="200"> %s </td></tr></table></td><td width="100"><table width="200"><tr width="200"><td width="200">%s</td></tr></table></td><td width="100"> %s </td><td width="100">%s</td><td width="100">%s %s %s</td><td width="100"><table width="300"><tr width="300"><td width="300"> %s</td></tr></table></td></tr>\n""" %(contact.societe,contact.fonction,contact.civ,contact.nom,contact.prenom,contact.ad1,contact.ad2,contact.ad3,contact.ad4,contact.cp,contact.ville,contact.mail1,contact.mail1,contact.mail2,contact.tel1,contact.tel2,contact.portable1,contact.portable2,contact.annijour,contact.annimois,contact.anniannee,contact.notes)
+        html =  html + "<table><tr><td>"
+    else :
+        for contact in listec :
+            html = html + "%s;%s;%s;%s;%s;%s;%s;%s;%s;%s;%s;%s;%s;%s;%s;%s;%s;%s;%s %s %s;%s; <br>" %(contact.societe,contact.fonction,contact.civ,contact.nom,contact.prenom,contact.ad1,contact.ad2,contact.ad3,contact.ad4,contact.cp,contact.ville,contact.mail1,contact.mail1,contact.mail2,contact.tel1,contact.tel2,contact.portable1,contact.portable2,contact.annijour,contact.annimois,contact.anniannee,contact.notes)
         
-        html = html + """<tr><td>%s</td><td> %s </td><td>%s</td><td> %s </td><td>%s </td><td>%s </td><td>%s </td><td>%s </td><td>%s </td><td>%s </td><td>%s</td><td><a href="mailto:%s">%s</a> </td><td>  %s</td><td> %s </td><td>%s</td><td> %s </td><td>%s</td><td>%s %s %s</td><td> %s</td></tr>\n""" %(contact.societe,contact.fonction,contact.civ,contact.nom,contact.prenom,contact.ad1,contact.ad2,contact.ad3,contact.ad4,contact.cp,contact.ville,contact.mail1,contact.mail1,contact.mail2,contact.tel1,contact.tel2,contact.portable1,contact.portable2,contact.annijour,contact.annimois,contact.anniannee,contact.notes)
         
     html = html + "</table></body></html>"
     return HttpResponse(html)
@@ -269,6 +321,7 @@ def chercher(request):
        Chercher
         <form action="rechercher/" method="post">
         <table><tr><td>
+<INPUT TYPE=hidden NAME=csv VALUE="-1">
 <INPUT TYPE=radio NAME=rechercheb VALUE="9" CHECKED>Societe<br>
 <INPUT TYPE=radio NAME=rechercheb VALUE="8">fonction<br>
 </TD><TD>
@@ -304,6 +357,7 @@ def chercher(request):
 </table><br>
 <p>Chercher</p> 
               <input type="text" name="recherche"    size="35" maxlength="40"/></td> 
+              <INPUT TYPE=checkbox NAME=csv VALUE="0">CSV<br>
   <p><input type="submit" value="Valider"/></p> 
         <p><input type="reset" value="Effacer"/></p>
 </form>
@@ -448,9 +502,6 @@ def modif(request):
     logging.getLogger("ZODB.FileStorage").setLevel(10000000)
     logging.getLogger("ZODB.lock_file").setLevel(10000000)
     logging.getLogger("ZODB.Connection").setLevel(10000000) 
-    html = """<html><body>
-        <a href="../">Retour</A><br>
-        """
     addr = '192.168.1.201', 8000
     storage = ClientStorage.ClientStorage(addr)
     db = DB(storage)
@@ -466,21 +517,17 @@ def modif(request):
                 listec.append(l[1])
     for contact in listec :
         newuser2  = contact
-     = string.upper(request.POST['mail1'])
-    newuser2.mail2 = string.upper(request.POST['mail2'])
-    newuser2.tel1 = string.upper(request.POST['tel1'])
-    newuser2.tel2 = string.upper(request.POST['tel2'])
-    newuser2.portable1 = string.upper(request.POST['portable1'])
-    newuser2.portable2 = string.upper(request.POST['portable2'])
-    newuser2.annijour = string.upper(request.POST['annijour'])
-    newuser2.annimois = string.upper(request.POST['annimois'])
-    newuser2.anniannee = string.upper(request.POST['anniannee'])
-    newuser2.notes = string.upper(request.POST['notes'])
+
+    #newuser2.annijour = string.upper(request.POST['annijour'])
+    #newuser2.annimois = string.upper(request.POST['annimois'])
+    #newuser2.anniannee = string.upper(request.POST['anniannee'])
+    
     html = """<html><body>
-        <a href="../">Retour</A><br>
+        <a href="../../">Retour</A><br>
         rajouter un contact
-                <form action="rajoutercontact/" method="post"> 
-                <input type="hidden" name="id" value="%s"
+                <form action="modifiercontact/" method="post"> 
+                <input type="hidden" name="id" value="%s">
+                <input type="hidden" name="effacer" value="%s">
         <table><tr><td>
         <p>Societe</p> 
               <input type="text" name="societe"    size="35" maxlength="40" value="%s"/></td> <td>
@@ -508,15 +555,15 @@ def modif(request):
         <tr><td> <p>MAIL1</p> 
               <input type="text" name="mail1"    size="38" maxlength="40" value="%s"/> </td> 
         <td><p>Mail2</p> 
-              <input type="text" name="mail2"    size="38" maxlength="40"/> </td> </tr>
+              <input type="text" name="mail2"    size="38" maxlength="40" value="%s"/> </td> </tr>
        <tr> <td><p>TEL1</p> 
-              <input type="text" name="tel1"    size="15" maxlength="40"/>  </td> 
+              <input type="text" name="tel1"    size="15" maxlength="40" value="%s"/>  </td> 
         <td><p>TEL2</p> 
-              <input type="text" name="tel2"    size="15" maxlength="40"/> </td> </tr>
+              <input type="text" name="tel2"    size="15" maxlength="40" value ="%s"/> </td> </tr>
          <tr><td><p>PORTABLE1</p> 
-              <input type="text" name="portable1"    size="15" maxlength="40"/></td> 
+              <input type="text" name="portable1"    size="15" maxlength="40" value="%s"/></td> 
            <td><p>PORTABLE2</p> 
-              <input type="text" name="portable2"    size="15" maxlength="40"/> </td></tr> 
+              <input type="text" name="portable2"    size="15" maxlength="40" value="%s"/> </td></tr> 
           <tr><td><P>Anniversaire</p>
           <SELECT NAME=annijour>
 <OPTION>1
@@ -567,14 +614,16 @@ def modif(request):
 </SELECT> 
               <input type="text" name="anniannee"    size="15" maxlength="40"/> </td> </tr>
          <tr><td colspan="2"> <p>Notes</p> 
-              <TEXTAREA NAME="notes" ROWS=8 COLS=50></TEXTAREA>
+              <TEXTAREA NAME="notes" ROWS=8 COLS=50>%s</TEXTAREA>
                </td> </tr>
               </table>
+              <INPUT TYPE=radio NAME="effacer" VALUE="-1">effacer<br>
         <p><input type="submit" value="Valider"/></p> 
+        
         <p><input type="reset" value="Effacer"/></p> 
     </form> 
 Importer un fichier csv.
-        </body></html>""" %(newuser2.id,newuser2.societe,newuser2.fonction,newuser2.civ,newuser2.nom,newuser2.prenom,newuser2.ad1,newuser2.ad2,newuser2.ad3,newuser2.ad4,newuser2.cp,newuser2.ville,newuser2.mail1)
+        </body></html>""" %(newuser2.id,newuser2.id,newuser2.societe,newuser2.fonction,newuser2.civ,newuser2.nom,newuser2.prenom,newuser2.ad1,newuser2.ad2,newuser2.ad3,newuser2.ad4,newuser2.cp,newuser2.ville,newuser2.mail1,newuser2.mail2,newuser2.tel1,newuser2.tel2,newuser2.portable1,newuser2.portable2,newuser2.notes)
     transaction.commit()
     connection.close()  
     return HttpResponse(html)
