@@ -134,7 +134,7 @@ Importer un fichier csv.
     
 def modifiercontact (request):
     newuser2 = User() 
-    addr = '192.168.1.201', 8000
+    addr = '127.0.0.1', 8000
     storage = ClientStorage.ClientStorage(addr)
     db2 = DB(storage)
     connection2 = db2.open()
@@ -180,7 +180,7 @@ Contact Modifié
 def rajoutercontact(request):
 
     newuser2 = User() 
-    addr = '192.168.1.201', 8000
+    addr = '127.0.0.1', 8000
     storage = ClientStorage.ClientStorage(addr)
     db2 = DB(storage2)
     connection2 = db2.open()
@@ -213,8 +213,6 @@ def rajoutercontact(request):
     transaction.commit()
     newuser2._p_changed = 1
     root2[newuser2.id] = newuser2
-    print root2[newuser2.id].id
-    print root2[newuser2.id]
     transaction.commit()
     connection2.close()
     html = """<html><body>
@@ -230,7 +228,7 @@ def rechercher(request):
     html = """<html><body>
         <a href="../">Retour</A><br>
         """
-    addr = '192.168.1.201', 8000
+    addr = '127.0.0.1', 8000
     storage = ClientStorage.ClientStorage(addr)
     db = DB(storage)
     connection = db.open()
@@ -421,7 +419,7 @@ def chermaj(request):
     html = """<html><body>
         <a href="../">Retour</A><br>
         """
-    addr = '192.168.1.201', 8000
+    addr = '127.0.0.1', 8000
     storage = ClientStorage.ClientStorage(addr)
     db = DB(storage)
     connection = db.open()
@@ -490,10 +488,8 @@ def chermaj(request):
     connection.close()          
     html = html + """<form action="modif/" method="post"><table ><tr><td></td><td>Societe</td><td>fonction</td><td>Civ</td><td>Nom</td><td>Prenom</td><td>Ad1</td><td>Ad2</td><td>Ad3</td><td>Ad4</td><td>Cp</td><td>Ville</td><td>Mail1</td><td>Mail2</td><td width=100%>Tel1</td><td>Tel2</td><td>Portable1</td><td>POrtable2</td><td>Societe</td><td>Anniversaire</td><td>Notes</td></tr>"""
     for contact in listec :
-        
-        html = html + """<tr><td>
-<INPUT TYPE=radio NAME=id VALUE="%s" ></td><td>%s</td><td> %s </td><td>%s</td><td> %s </td><td>%s </td><td>%s </td><td>%s </td><td>%s </td><td>%s </td><td>%s </td><td>%s</td><td><a href="mailto:%s">%s</a> </td><td>  %s</td><td> %s </td><td>%s</td><td> %s </td><td>%s</td><td>%s %s %s</td><td> %s</td></tr>\n""" %(contact.id,contact.societe,contact.fonction,contact.civ,contact.nom,contact.prenom,contact.ad1,contact.ad2,contact.ad3,contact.ad4,contact.cp,contact.ville,contact.mail1,contact.mail1,contact.mail2,contact.tel1,contact.tel2,contact.portable1,contact.portable2,contact.annijour,contact.annimois,contact.anniannee,contact.notes)
-        
+            html = html + """<tr width="100%">"""
+            html = html + """<td><INPUT TYPE=radio NAME=id VALUE="%s" ></td><td width="100"><table width="300"><tr width="300"><td width="300">%s</td></tr></table></td><td width="100"> %s </td><td width="100">%s</td><td width="100"> %s </td><td width="100">%s </td><td width="100"><table width="300"><tr width="300"><td width="300"> %s </td></tr></table></td><td width="100"><table width="300"><tr width="300"><td width="300">%s</td></tr></table> </td><td width="100"><table width="300"><tr width="300"><td width="300">%s </td></tr></table></td><td width="100"><table width="300"><tr width="300"><td width="300">%s </td></tr></table></td><td width="100">%s </td><td width="100"><table width="300"><tr width="300"><td width="300">%s</td></tr></table></td><td width="100"><a href="mailto:%s">%s</a> </td><td width="100">  %s</td><td width="100"><table width="200"><tr width="200"><td width="200"> %s </td></tr></table></td><td width="100"><table width="200"><tr width="200"><td width="200">%s</td></tr></table></td><td width="100"> %s </td><td width="100">%s</td><td width="100">%s %s %s</td><td width="100"><table width="300"><tr width="300"><td width="300"> %s</td></tr></table></td></tr>\n""" %(contact.id,contact.societe,contact.fonction,contact.civ,contact.nom,contact.prenom,contact.ad1,contact.ad2,contact.ad3,contact.ad4,contact.cp,contact.ville,contact.mail1,contact.mail1,contact.mail2,contact.tel1,contact.tel2,contact.portable1,contact.portable2,contact.annijour,contact.annimois,contact.anniannee,contact.notes)
     html = html + """</table><input type="submit" value="Modifier"/></form></body></html>"""
     return HttpResponse(html)
 
@@ -502,7 +498,7 @@ def modif(request):
     logging.getLogger("ZODB.FileStorage").setLevel(10000000)
     logging.getLogger("ZODB.lock_file").setLevel(10000000)
     logging.getLogger("ZODB.Connection").setLevel(10000000) 
-    addr = '192.168.1.201', 8000
+    addr = '127.0.0.1', 8000
     storage = ClientStorage.ClientStorage(addr)
     db = DB(storage)
     connection = db.open()
@@ -512,7 +508,6 @@ def modif(request):
     listec = []
     recherche = int(request.POST['id'])
     for l in k :
-        print l[1].id
         if recherche == l[1].id :
                 listec.append(l[1])
     for contact in listec :

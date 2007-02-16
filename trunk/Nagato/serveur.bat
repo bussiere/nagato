@@ -1,1 +1,2 @@
-"C:\Python25\python.exe" manage.py runserver 192.168.1.201:80
+cd C:\Nagato
+"C:\Python25\python.exe" manage.py runserver 127.0.0.1:80
